@@ -88,10 +88,15 @@ int main()
 
             memset(buffer_post, '\0', 1024);
             sprintf(buffer_post,"Your #ID is %d\n",clientSequence++);
+            printf("[server]send msg content is:%s\n",buffer_post);
             sleep(5);
 //            postMsg(inet_ntoa(client_addr.sin_addr),ntohs(client_addr.sin_port),buffer_received);
-//            postMsg(inet_ntoa(client_addr.sin_addr),char2num(buffer_received),buffer_received);
-            postMsg(inet_ntoa(client_addr.sin_addr),8100,buffer_post);
+//            postMsg(inet_ntoa(client_addr.sin_addr),8100,buffer_post);
+            if(send(new_server_socket,buffer_post, sizeof(buffer_post),0)<0){
+                printf("[ERR]:react to Client failed\n");
+                break;
+            }
+            printf("React to Client Success!\n");
 //            break;
         }
     }
