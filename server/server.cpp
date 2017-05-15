@@ -56,8 +56,6 @@ int main()
 
     socklen_t length = sizeof(struct sockaddr_in);
 
-    while(1)
-    {
         int new_server_socket = accept(socket_fd, (struct sockaddr *) &client_addr, &length);
 
 
@@ -68,6 +66,8 @@ int main()
 
         printf("accept client %s\n", inet_ntoa(client_addr.sin_addr));
 
+    while(1)
+    {
         char buffer_received[1024],buffer_post[1024];
         memset(buffer_received, '\0', 1024);
         memset(buffer_post, '\0', 1024);
@@ -89,7 +89,7 @@ int main()
             memset(buffer_post, '\0', 1024);
             sprintf(buffer_post,"Your #ID is %d\n",clientSequence++);
             printf("[server]send msg content is:%s\n",buffer_post);
-            sleep(5);
+            sleep(1);
 //            postMsg(inet_ntoa(client_addr.sin_addr),ntohs(client_addr.sin_port),buffer_received);
 //            postMsg(inet_ntoa(client_addr.sin_addr),8100,buffer_post);
             if(send(new_server_socket,buffer_post, sizeof(buffer_post),0)<0){
