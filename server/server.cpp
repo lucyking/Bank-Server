@@ -5,12 +5,15 @@
 #include<arpa/inet.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <iostream>
 
 #include "../include/error.h"
 #include "postMsg.h"
 
 int PORT_NO = 8080;
 
+int char2num(char a[]);
 
 int main()
 {
@@ -65,8 +68,9 @@ int main()
 
         printf("accept client %s\n", inet_ntoa(client_addr.sin_addr));
 
-        char buffer_received[1024];
+        char buffer_received[1024],buffer_post[1024];
         memset(buffer_received, '\0', 1024);
+        memset(buffer_post, '\0', 1024);
 
         int length_received = recv(new_server_socket, buffer_received, sizeof(buffer_received), 0);
         if(length_received < 0)
@@ -76,16 +80,32 @@ int main()
         if(length_received > 0) {
             printf("get bytes length: %d\n", length_received);
             buffer_received[length_received] = '\0';
-            printf("Received: %s\r\n", buffer_received);
+            printf("Received: %s\n", buffer_received);
+            int tmp =char2num(buffer_received);
+            printf("Received: %d\n",tmp);
 
-            memset(buffer_received, '\0', 1024);
-            sprintf(buffer_received,"Your #ID is %d\n",clientSequence++);
+//            int client_listenPort = atoi()
+
+            memset(buffer_post, '\0', 1024);
+            sprintf(buffer_post,"Your #ID is %d\n",clientSequence++);
             sleep(5);
-            postMsg(inet_ntoa(client_addr.sin_addr),8081,buffer_received);
+//            postMsg(inet_ntoa(client_addr.sin_addr),ntohs(client_addr.sin_port),buffer_received);
+//            postMsg(inet_ntoa(client_addr.sin_addr),char2num(buffer_received),buffer_received);
+            postMsg(inet_ntoa(client_addr.sin_addr),8100,buffer_post);
 //            break;
         }
     }
     return 0;
 }
 
+int char2num(char a[]){
+    int sum=0;
+    std::cout<< "char2num >>>";
+    for(int i=0;a[i]!='\0';i++){
+        std::cout << a[i];
+        sum=sum*10+(a[i]-'0');
+    }
+    printf("char2num: %d\n",sum);
+    return sum;
+}
 

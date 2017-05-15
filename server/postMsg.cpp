@@ -46,7 +46,7 @@ int postMsg(char *hostName, int hostPort, char *msg) {
     socklen_t server_addr_len = sizeof(server_addr);
 
 
-    printf("connecting to %s, port=%d\n", inet_ntoa(server_addr.sin_addr), server_addr.sin_port);
+    printf("connecting to %s, port=%d\n", inet_ntoa(server_addr.sin_addr), ntohs(server_addr.sin_port));
     if (connect(client_socket, (struct sockaddr *) &server_addr, server_addr_len) == -1) {
         fail("connent to server fail");
     }
@@ -61,7 +61,7 @@ int postMsg(char *hostName, int hostPort, char *msg) {
     printf("send completed, size = %d\n", strlen(content));
     free(content);
     close(client_socket);
-    sleep(1);
+    sleep(0.5);
 
     return 0;
 }
